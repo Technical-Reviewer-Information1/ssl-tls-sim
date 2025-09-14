@@ -8,9 +8,10 @@ from crypto_utils import (
     common_key_decrypt
 )
 
+st.set_page_config(page_title="SSL/TLS", layout="wide")
 
 def main():
-    st.title("SSL/TLSの仕組みを体験しよう！")
+    st.title("SSL/TLS（pp.128-129）")
     st.caption("Created by Dit-Lab.(Daiki ITO)")
     st.caption("Supported by Tomoaki ATSUMI")
     
