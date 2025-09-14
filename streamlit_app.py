@@ -118,7 +118,6 @@ def main():
         
         if st.session_state.phase3_done:
             st.success("🗝️ **復号された共通鍵**: " + st.session_state.common_key)
-            st.balloons()
             st.success("""
             🎉 **成功！** これで、ClientとWeb Serverの両方が、誰にも知られることなく同じ共通鍵 🗝️ を持つことができました。
             これがSSL/TLSハンドシェイクの最も重要な部分です。
