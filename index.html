@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSL/TLS｜情報Ⅰ共通テスト対策問題集</title>
+<meta name="description" content="共通鍵は速い、公開鍵は鍵を渡さなくてよい。両方のいいとこ取りがハイブリッド暗号方式です。実際の通信の始まりを追いかけましょう。">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Crect width=%2232%22 height=%2232%22 fill=%22%2315181c%22/%3E%3Ctext x=%2216%22 y=%2222%22 font-size=%2218%22 font-family=%22monospace%22 fill=%22%23fff%22 text-anchor=%22middle%22%3E01%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+<header class="app-header">
+  <div class="inner">
+    <span class="eyebrow">第 4 章　情報通信ネットワーク　4-12</span>
+    <h1>SSL/TLS（pp.128-129）</h1>
+    <p class="lead">共通鍵は速い、公開鍵は鍵を渡さなくてよい。両方のいいとこ取りがハイブリッド暗号方式です。実際の通信の始まりを追いかけましょう。</p>
+    <p class="credit">Created by Dit-Lab.(Daiki ITO)　/　Supported by Tomoaki ATSUMI</p>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="step" id="step1">
+    <h2><span class="no">STEP 1</span>なぜ2つの方式を組み合わせるのか</h2>
+    <p class="desc">それぞれに長所と短所があります。<strong>どちらか一方では困る</strong>ことを確かめましょう。</p>
+
+    <div class="panel">
+      <label class="fld" for="dataMb">送るデータの量：<span class="mono" id="dataMbV">10</span> MB</label>
+      <input type="range" id="dataMb" min="1" max="200" step="1" value="10">
+      <div style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;font-size:.85rem"><span><span class="term" data-t="共通鍵暗号方式">共通鍵暗号方式</span>だけで暗号化</span><span class="mono" id="tCommon"></span></div>
+        <div class="speedbar"><i id="barCommon"></i></div>
+      </div>
+      <div style="margin-top:12px">
+        <div style="display:flex;justify-content:space-between;font-size:.85rem"><span><span class="term" data-t="公開鍵暗号方式">公開鍵暗号方式</span>だけで暗号化</span><span class="mono" id="tPublic"></span></div>
+        <div class="speedbar"><i id="barPublic" class="slow"></i></div>
+      </div>
+      <div class="note" id="speedNote" style="margin-top:12px"></div>
+      <div class="eqbox" style="margin-top:14px;text-align:left;line-height:2">
+        共通鍵暗号方式：<strong>速い</strong>けれど、鍵を安全に渡せない（鍵配送問題）<br>
+        公開鍵暗号方式：鍵を渡さなくてよいけれど、<strong>遅い</strong><br>
+        → <strong><span class="term" data-t="ハイブリッド暗号方式">ハイブリッド暗号方式</span></strong>：データは共通鍵で暗号化し、<strong>その共通鍵だけ</strong>を公開鍵暗号方式で渡す
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="step2">
+    <h2><span class="no">STEP 2</span>通信が始まるまでを追う</h2>
+    <p class="desc">ブラウザとWebサーバのやり取りを1段階ずつ見ます。<strong>共通鍵がどうやって安全に渡されるか</strong>に注目してください。</p>
+    <div class="panel">
+      <div class="btn-row" style="margin-bottom:12px">
+        <button class="btn primary" id="hsNext">次へ ▶</button>
+        <button class="btn" id="hsAuto">自動で動かす</button>
+        <button class="btn ghost" id="hsReset">最初から</button>
+        <span class="badge" id="hsStage"></span>
+      </div>
+      <div id="hsBox"></div>
+      <div class="note" id="hsNote" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step3">
+    <h2><span class="no">STEP 3</span>証明書を確かめる</h2>
+    <p class="desc">公開鍵が<strong>本当にそのサイトのものか</strong>は、<span class="term" data-t="認証局">認証局</span>が発行した証明書で確かめます。</p>
+    <div class="panel">
+      <div class="btn-row" style="margin-bottom:12px">
+        <button class="btn sm" data-cert="ok">正しい証明書</button>
+        <button class="btn sm" data-cert="expired">期限切れ</button>
+        <button class="btn sm" data-cert="name">ドメイン名が一致しない</button>
+        <button class="btn sm" data-cert="self">認証局の署名がない</button>
+      </div>
+      <div class="certcard" id="certCard"></div>
+      <div class="note" id="certNote" style="margin-top:12px"></div>
+    </div>
+  </section>
+
+  <section class="step" id="step4">
+    <h2><span class="no">STEP 4</span>確認クイズ</h2>
+    <div class="panel">
+      <div class="qhead">
+        <span class="badge" id="qProgress">1 / 1</span>
+        <span class="badge">正解 <span class="score" id="qScore">0</span></span>
+      </div>
+      <div class="card-q"><div class="q-scene" id="qText"></div></div>
+      <div class="choice4" id="qChoices"></div>
+      <div class="note" id="qFb" hidden style="margin-top:12px"></div>
+      <div class="btn-row" style="margin-top:12px">
+        <button class="btn primary" id="qNext" disabled>次の問題</button>
+        <button class="btn ghost" id="qReset">最初から</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="step" id="glossary">
+    <h2><span class="no">用語</span>この節で出てくることば</h2>
+    <div id="glossBox"></div>
+  </section>
+
+  <section class="step">
+    <h2><span class="no">まとめ</span>SSL/TLSのポイント</h2>
+    <ul style="margin:0;padding-left:1.2em;color:var(--ink-2);font-size:.92rem;line-height:2.05">
+      <li><strong>データの暗号化＝共通鍵暗号方式</strong>（速いから）、<strong>共通鍵の受け渡し＝公開鍵暗号方式</strong>（安全に渡せるから）。</li>
+      <li>共通鍵は<strong>受信者（サーバ）の公開鍵</strong>で暗号化して送る。受け取ったサーバは<strong>自分の秘密鍵</strong>で取り出す。</li>
+      <li>公開鍵と秘密鍵のペアは<strong>サーバ側</strong>で作る。クライアント側ではない。</li>
+      <li>認証局（CA）が<strong>デジタル証明書</strong>を発行し、そのサーバが本物であることを保証する。</li>
+      <li>URLが <span class="mono">https</span> で始まり、鍵マークが出ていればSSL/TLSが使われている。</li>
+    </ul>
+  </section>
+
+  <section class="step">
+    <h2><span class="no">活用</span>授業・探究での使い方</h2>
+    <div class="use-note">
+      <h3>授業で</h3>
+      <ul>
+        <li>STEP 1 で「なぜ2つの方式を組み合わせるのか」を、速度の比較から納得させる。</li>
+        <li>STEP 2 のハンドシェイクを1段階ずつ進め、共通鍵がどう渡されるかを確認する。</li>
+        <li>STEP 3 の証明書のしくみは、ブラウザの鍵マークを実際に見せながら説明できる。</li>
+      </ul>
+      <h3 style="margin-top:12px">探究で</h3>
+      <ul>
+        <li>実際のWebサイトの証明書を開き、認証局・有効期限・ドメイン名を確認する。</li>
+        <li>httpのページとhttpsのページで、通信内容がどう扱われるかのちがいを整理する。</li>
+        <li>証明書が信頼できないと警告が出る場面を調べ、その理由を説明する。</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer class="app-footer">
+  情報Ⅰ 共通テスト対策問題集（技術評論社）連動Webアプリ　/　Created by Dit-Lab.(Daiki ITO)　/　Supported by Tomoaki ATSUMI
+</footer>
+
+<script src="js/tools.js"></script>
+<script src="js/chart.js"></script>
+<script src="js/terms.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
