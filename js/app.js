@@ -173,6 +173,12 @@
     $('qScore').textContent = qScore; $('qNext').disabled = false;
   }
 
+  /* 本文の問題 */
+  function drawBook() {
+    if (!document.getElementById('bookBox')) return;
+    window.Quiz.choice('bookBox', 'bookNote', [{"k": "ア", "q": "共通鍵暗号方式のメリットは。", "ch": ["公開鍵暗号方式と比べて、暗号化と復号の処理速度が速い", "送信者と受信者が異なる鍵を使用するため、鍵の管理が容易になる", "インターネット上でデータが改ざんされていないことを証明できる", "共通鍵を安全に受信者へ送信する必要がないため、鍵交換の手間がかからない"], "a": 0, "why": "共通鍵は<strong>速い</strong>のが利点。だから大量のデータ本体の暗号化に使います。STEP 1 で速さの差を確かめられます。"}, {"k": "イ", "q": "公開鍵暗号方式のメリットは。", "ch": ["共通鍵を受信者の秘密鍵で暗号化することで、共通鍵を傍受できない", "共通鍵を公開鍵によって暗号化することで、受信者は自身の秘密鍵を使用して共通鍵を復号できるため、より安全性の高い通信を実現できる", "インターネット上でデータが改ざんされていないことを証明できる", "高速で暗号文を復号することができる"], "a": 1, "why": "公開鍵暗号方式は遅いけれど<strong>鍵を安全に渡せる</strong>のが利点。そこで「鍵の受け渡しだけ公開鍵、本体は共通鍵」と組み合わせます（ハイブリッド暗号方式）。"}, {"k": "ウ", "q": "ハイブリッド暗号方式の説明として<strong>誤っている</strong>ものは。", "ch": ["データの暗号化には共通鍵暗号方式が用いられ、共通鍵の受け渡しには公開鍵暗号方式が用いられる", "認証局（CA）はWebサーバの身元を証明するためにデジタル証明書を発行する", "クライアントはサーバ証明書を検証し、信頼できる場合のみ通信を確立する", "公開鍵と秘密鍵のペアはクライアント側で生成される"], "a": 3, "why": "鍵のペアを作るのは<strong>サーバ側</strong>です。サーバが公開鍵を証明書に入れて配り、秘密鍵は自分だけが持ちます。"}], "本文の答えは【ア】⓪　【イ】①　【ウ】③ です。");
+  }
+
   function init() {
     $('dataMb').addEventListener('input', drawSpeed);
     $('hsNext').addEventListener('click', () => { hi = (hi + 1) % HS.length; drawHs(); });
@@ -187,6 +193,7 @@
     $('qReset').addEventListener('click', startQuiz);
     window.Terms.glossary($('glossBox'), ['SSL/TLS', 'ハイブリッド暗号方式', '共通鍵暗号方式', '公開鍵暗号方式', '認証局', 'デジタル署名', 'HTTP', 'URL']);
     drawSpeed(); drawHs(); drawCert('ok'); startQuiz();
+    drawBook();
     window.Terms.attach();
   }
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
